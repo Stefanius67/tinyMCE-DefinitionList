@@ -91,12 +91,12 @@ https://www.tiny.cloud/docs/tinymce/6/editor-important-options/#plugins
 
 ## Configuration
 
-| Option               | Type   | Description | Default |
-|----------------------|--------|-------------|---------|
-| `deflist_icon`       | string | Icon for the toolbar button | <svg height="24" width="24" viewBox="0 0 100 100"><rect fill="rgb(52,52,52)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/></svg> |
-| `deflist_title_icon` | string | Icon for the item to format as title | <svg height="24" width="24" viewBox="0 0 100 100"><rect fill="rgb(52,52,52)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/><rect fill="rgb(192,192,192)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/><rect fill="rgb(192,192,192)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/><rect fill="rgb(192,192,192)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/><rect fill="rgb(192,192,192)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/></svg> |
-| `deflist_descr_icon` | string | Icon for the item to format as description | <svg height="24" width="24" viewBox="0 0 100 100"><rect fill="rgb(192,192,192)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/><rect fill="rgb(192,192,192)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/></svg> |
-| `deflist_iconsize`   | number | Iconsize in pixel, if the default icons are used | 24 |
+| Option               | Type   | Description                                       | Default |
+|----------------------|--------|---------------------------------------------------|---------|
+| `deflist_icon`       | string | Icon for the toolbar button                       | *empty* |
+| `deflist_title_icon` | string | Icon for the item to format as title              | *empty* |
+| `deflist_descr_icon` | string | Icon for the item to format as description        | *empty* |
+| `deflist_iconsize`   | number | Iconsize in pixel, if the internal icons are used | 24      |
 
 ### Defining custom icons to use in the toolbar
 
@@ -113,6 +113,20 @@ The icon values can specify either an
      see: https://www.tiny.cloud/docs/tinymce/6/creating-an-icon-pack
    - or added using the `addIcon` API  
      see: https://www.tiny.cloud/docs/tinymce/6/apis/tinymce.editor.ui.registry/#addIcon
+
+If no value for an icon is specified in the options, the plugin checks, if a 
+default icon (`deflist`, `deflist_title`, `deflist_descr`) is defined in the current
+`editor.ui.registry` (from icon pack, custom icon pack or via `addIcon`).
+If there is nothing defined, a default internal icon is used. If the internal icon is
+used, the icon size can be changed using the `deflist_iconsize` to adapt the icon to 
+a skin and/or theme in use, if necessary.
+
+| Description                                | Registry-Name   | Internal icon |
+|--------------------------------------------|-----------------|---------------|
+| Icon for the toolbar button                | `deflist`       | <svg height="24" width="24" viewBox="0 0 100 100"><rect fill="rgb(52,52,52)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/></svg> |
+| Icon for the item to format as title       | `deflist_title` | <svg height="24" width="24" viewBox="0 0 100 100"><rect fill="rgb(52,52,52)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/><rect fill="rgb(192,192,192)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/><rect fill="rgb(192,192,192)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/><rect fill="rgb(192,192,192)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/><rect fill="rgb(192,192,192)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/></svg> |
+| Icon for the item to format as description | `deflist_descr` | <svg height="24" width="24" viewBox="0 0 100 100"><rect fill="rgb(192,192,192)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/><rect fill="rgb(192,192,192)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/><rect fill="rgb(52,52,52)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/></svg> |
+
 
 ```JS
 tinymce.init({

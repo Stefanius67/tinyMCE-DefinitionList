@@ -24,69 +24,6 @@ tinymce.PluginManager.add('deflist', function(editor, url){
         console.error('Please use the Lists plugin together with the Definition List plugin.');
     }
 
-	editor.options.register('deflist_iconsize', {
-		processor: 'number',
-		default: 24,
-	});
-
-    // unfortunately, some minimmizer has problems with 'ECMAScript 6 template literals' :-(
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
-
-    // our internal button definitions
-    const size = editor.options.get('deflist_iconsize');
-    const svgButton_DL = 
-        '<svg height="' + size + '" width="' + size + '" viewBox="0 0 100 100">' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/>' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/>' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/>' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/>' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/>' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/>' +
-        '</svg>';
-    const svgButton_DT = 
-        '<svg height="' + size + '" width="' + size + '" viewBox="0 0 100 100">' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/>' +
-        '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/>' +
-        '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/>' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/>' +
-        '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/>' +
-        '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/>' +
-        '</svg>';
-    const svgButton_DD = 
-        '<svg height="' + size + '" width="' + size + '" viewBox="0 0 100 100">' +
-        '  <rect fill="rgb(192,192,192)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/>' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/>' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/>' +
-        '  <rect fill="rgb(192,192,192)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/>' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/>' +
-        '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/>' +
-        '</svg>';
-
-    // ... that can be overridden in the options with either
-    // - an own svg definition (MUST start with '<svg'!))
-    // - an icon name that corresponds to an icon
-    //   1. in the icon pack  
-    //      https://www.tiny.cloud/docs/tinymce/6/editor-icon-identifiers
-    //   2. in a custom icon pack
-    //      https://www.tiny.cloud/docs/tinymce/6/creating-an-icon-pack
-    //   3. or added using the `addIcon` API
-    //      https://www.tiny.cloud/docs/tinymce/6/apis/tinymce.editor.ui.registry/#addIcon
-	editor.options.register('deflist_icon', {
-		processor: 'string',
-		default: svgButton_DL,
-	});
-	editor.options.register('deflist_title_icon', {
-		processor: 'string',
-		default: svgButton_DT,
-	});
-	editor.options.register('deflist_descr_icon', {
-		processor: 'string',
-		default: svgButton_DD,
-	});
-    const deflistIconDL = editor.options.get('deflist_icon');
-    const deflistIconDT = editor.options.get('deflist_title_icon');
-    const deflistIconDD = editor.options.get('deflist_descr_icon');
-
     /*--------------------------------------------- 
      * Helpers copied from the core lists plugin
      *-----------------------------+++++++---------*/
@@ -231,44 +168,89 @@ tinymce.PluginManager.add('deflist', function(editor, url){
     /*-------------------------------------- 
      * End of helpers from the lists plugin
      *--------------------------------------*/
-    const registerIcon = (value, alias) => {
-        if (value.trim().substring(0, 4).toLowerCase() === '<svg') {
-            editor.ui.registry.addIcon(alias, value);
-            return alias;
+
+	editor.options.register('deflist_iconsize', {
+		processor: 'number',
+		default: 24,
+	});
+
+    // our internal button definitions
+    const size = editor.options.get('deflist_iconsize');
+    const defaultIcon = {
+        'deflist':
+            '<svg height="' + size + '" width="' + size + '" viewBox="0 0 100 100">' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/>' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/>' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/>' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/>' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/>' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/>' +
+            '</svg>',
+        'deflist_title':
+            '<svg height="' + size + '" width="' + size + '" viewBox="0 0 100 100">' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/>' +
+            '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/>' +
+            '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/>' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/>' +
+            '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/>' +
+            '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/>' +
+            '</svg>',
+        'deflist_descr':
+            '<svg height="' + size + '" width="' + size + '" viewBox="0 0 100 100">' +
+            '  <rect fill="rgb(192,192,192)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/>' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/>' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/>' +
+            '  <rect fill="rgb(192,192,192)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/>' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/>' +
+            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/>' +
+            '</svg>',
+    };
+
+    // ... that can be overridden in the options with either
+    // - an own svg definition (MUST start with '<svg'!))
+    // - an icon name that corresponds to an icon
+    //   1. in the icon pack  
+    //      https://www.tiny.cloud/docs/tinymce/6/editor-icon-identifiers
+    //   2. in a custom icon pack
+    //      https://www.tiny.cloud/docs/tinymce/6/creating-an-icon-pack
+    //   3. or added using the `addIcon` API
+    //      https://www.tiny.cloud/docs/tinymce/6/apis/tinymce.editor.ui.registry/#addIcon
+	editor.options.register('deflist_icon',       { processor: 'string', default: ''});
+	editor.options.register('deflist_title_icon', { processor: 'string', default: ''});
+	editor.options.register('deflist_descr_icon', { processor: 'string', default: ''});
+
+    const icons = editor.ui.registry.getAll().icons;
+    const getIcon = (name) => {
+        const value = editor.options.get(name + '_icon');
+        if (value !== '') {
+            // value for the icon is set in the options
+            if (value.trim().substring(0, 4).toLowerCase() === '<svg') {
+                // direct SVG -> add new icon to the registry
+                editor.ui.registry.addIcon(name, value);
+                return name;
+            } else {
+                // existing icon from the registry
+                return value;
+            }
+        } else if (name in editor.ui.registry.getAll().icons){
+            // no icon specified in the options but default icon is registered
+            return name;
         } else {
-            return value;
+            // neither a value set in the options nor a default icon registered
+            editor.ui.registry.addIcon(name, defaultIcon[name]);
+            return name;
         }
     };
-    const iconDL = registerIcon(deflistIconDL, '_deflist_DL');
-    const iconDT = registerIcon(deflistIconDT, '_deflist_DT');
-    const iconDD = registerIcon(deflistIconDD, '_deflist_DD');
-    
-    /*
-    var iconDL = deflistIconDL;
-    if (iconDL.trim().substring(0, 4).toLowerCase() === '<svg') {
-        editor.ui.registry.addIcon('_deflist_DL', iconDL);
-        iconDL = '_deflist_DL';
-    }
-    var iconDT = deflistIconDT;
-    if (iconDT.trim().substring(0, 4).toLowerCase() === '<svg') {
-        editor.ui.registry.addIcon('_deflist_DT', iconDT);
-        iconDD = '_deflist_DT';
-    }
-    var iconDD = deflistIconDD;
-    if (iconDD.trim().substring(0, 4).toLowerCase() === '<svg') {
-        editor.ui.registry.addIcon('_deflist_DD', iconDD);
-        iconDD = '_deflist_DD';
-    }
-    */
-    
-    // editor.ui.registry.addIcon('_deflist_t', svgButton_t);
-    // editor.ui.registry.addIcon('_deflist_d', svgButton_d);
+    const iconDL = getIcon('deflist');
+    const iconDT = getIcon('deflist_title');
+    const iconDD = getIcon('deflist_descr');
     
     editor.ui.registry.addSplitButton('deflist', {
         tooltip: 'Definition-list',
         icon: iconDL,
         fetch: callback => {
             const curnode = editor.selection.getNode();
+            // see https://www.tiny.cloud/docs/tinymce/6/custom-split-toolbar-button/#choice-menu-items
             const items = [
                 {
                     type: 'choiceitem',
