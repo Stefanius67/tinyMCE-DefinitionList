@@ -21,8 +21,8 @@ to create a definition list and set headings and descriptions within this list.
 
 > The tinyMCE core 'lists' plugin basically contains the entire functionality for 
 > inserting definition lists - although unfortunately neither a toolbar button nor
-> a menu entry is defined for this :-(
-> (i've no idea, why this little step wasn't done inside of the existing plugin...).
+> a menu entry is defined for this :-(  
+> *(i've no idea, why this little step wasn't done inside of the existing plugin...).*
 >
 > To toggle the button state correctly, some internal functions are required, which 
 > would make it very complex to implement the desired button via 
@@ -40,7 +40,7 @@ Download the latest release and copy the `deflist` folder
    'internal plugin'
    
 **Note:**  
-This plugin uses commands and functionalti from the core tinyMCE 'lists' plugin 
+This plugin uses commands and functionality from the core tinyMCE 'lists' plugin 
 and therefore this plugin needs to be enabled in addition.
    
 ### Usage as 'external plugin'
@@ -51,7 +51,7 @@ from the core installation, you have to load placeholder as external plugin:
 ```JS
 tinymce.init({
   selector: 'your_editor',
-  plugins: 'plugin1 ... pluginN lists',
+  plugins: '... lists ...',
   external_plugins: {
     'deflist': 'http://www.yourdomain.com/yourplugins/deflist/plugin.min.js',
   }
@@ -77,7 +77,7 @@ subfolder of the `plugins` directory of your ***tinyMCE*** installation.
 ```JS
 tinymce.init({
   selector: 'your_editor',
-  plugins: 'plugin1 ... pluginN lists deflist',
+  plugins: '... lists deflist ...',
   ...
 });
 ```
@@ -120,11 +120,11 @@ tinymce.init({
   external_plugins: {
     'deflist': 'http://www.yourdomain.com/yourplugins/deflist/plugin.min.js',
   }
-  // icon grom the core icon pack
+  // icon from the core icon pack
   deflist_icon: 'align-justify',	
   // icon 'custom_deflist' must be defined in a custom icon pack
   deflist_title_icon: 'custom_deflist',
-  // direct SVG - just a simple darkred circle...
+  // direct SVG - just a simple darkred circle for demonstration...
   deflist_descr_icon: '<svg height="24" width="24" viewBox="0 0 100 100"><circle fill="rgb(127,0,0)" cx="50" cy="50" r="50" /></svg>',
   ...
 });
@@ -142,6 +142,10 @@ needed to create additional localizations:
    tinymce.PluginManager.requireLangPack('placeholder', 'de, fr');
    ```
 3. Recreate the minified `plugin.min.js` version 
+
+> **Note:**  
+> It would be great if you would add your created translation file(s) to the repository 
+> via pull request to make them available to other users :-)
 
 ### JS minification
 
