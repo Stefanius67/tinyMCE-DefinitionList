@@ -158,13 +158,19 @@ needed to create additional localizations:
 3. Recreate the minified `plugin.min.js` version 
 
 > **Note:**  
-> It would be great if you would add your created translation file(s) to the repository 
-> via pull request to make them available to other users :-)
+> It would be great if you add your created translation file(s) to the repository 
+> via pull request to make them available to other users... or just email me any new 
+> translation file(s) :-)
 
 ### JS minification
 
+[Terser 5](https://github.com/terser/terser)
+: A JavaScript mangler/compressor toolkit for ES6+. Needs latest version of 
+[node.js](http://nodejs.org/) to be installed to run it from the terminal. The easiest 
+way then is to use the bash script 'minify' which is included in the root of this package.
+
 [Minify-JS](https://minify-js.com/)
-: Uses 'Terser 5'
+: Online tool uses 'Terser 5'
 
 [JCompress](https://jscompress.com/)
-: Uses 'UglifyJS 3' and 'babel-minify' (doesn't support ES6)
+: Online tool uses 'UglifyJS 3' and 'babel-minify' (doesn't support ES6)
