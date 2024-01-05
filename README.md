@@ -9,6 +9,8 @@
   - [Usage as external plugin](#usage-as-external-plugin)
   - [Usage as internal plugin](#usage-as-internal-plugin)
 - [Configuration](#configuration)
+  - [Add the splitbutton to the toolbar](#add-the-splitbutton-to-the-toolbar)
+  - [Activate the items in the contextmenu](#activate-the-items-in-the-contextmenu)
 - [Localization](#localization)
 
 ---
@@ -17,7 +19,19 @@
 **Plugin for tinyMCE (Version 6.x) to insert and edit definition lists.**
 
 This plugin allows you to insert a split button into the toolbar of a tinyMCE editor 
-to create a definition list and set headings and descriptions within this list.
+to create a definition list and set headings and descriptions within this list.  
+
+It contains:
+
+1. **A splitbutton for the toolbar**   
+   A definitionlist canbe startet with a click on the button. If the cursor/selection 
+   is inside of a definitionlist, the entries kann be toggled between heading and 
+   description by selection of one of the splitbutton options.
+2. **Entries to the contextmenu**  
+   The functionality to toggle between heading and description inside of a d
+   efinitionlist can also be added to the tinyMCE's contextmenu. If the user 
+   right-clicks on an item inside of a definitionlist, he can change a title 
+   to a description or vise versa.
 
 > The tinyMCE core 'lists' plugin basically contains the entire functionality for 
 > inserting definition lists - although unfortunately neither a toolbar button nor
@@ -91,14 +105,46 @@ https://www.tiny.cloud/docs/tinymce/6/editor-important-options/#plugins
 
 ## Configuration
 
+### Add the splitbutton to the toolbar
+
+To add the splitbutton to the toolbar, the 'deflist' keyword can be placed at any 
+position within the toolbar definition.
+
+```JS
+tinymce.init({
+  selector: 'your_editor',
+  external_plugins: {
+    'deflist': 'http://www.yourdomain.com/yourplugins/placeholder/plugin.min.js',
+  }
+  toolbar: 'btn1 btn2 ... btnN | deflist',
+  ...
+});
+```
+
+### Activate the items in the contextmenu
+
+To activate the items in the contextmenu (if the cursor is within a definitionlist) the
+'deflist' keyword can be placed at any position within the contextmenu definition.
+
+```JS
+tinymce.init({
+  selector: 'your_editor',
+  external_plugins: {
+    'deflist': 'http://www.yourdomain.com/yourplugins/placeholder/plugin.min.js',
+  }
+  contextmenu:    'item1 item2 ... itemN | deflist',
+  ...
+});
+```
+
+### Defining custom icons to use in the toolbar
+
 | Option               | Type   | Description                                       | Default |
 |----------------------|--------|---------------------------------------------------|---------|
 | `deflist_icon`       | string | Icon for the toolbar button                       | *empty* |
 | `deflist_title_icon` | string | Icon for the item to format as title              | *empty* |
 | `deflist_descr_icon` | string | Icon for the item to format as description        | *empty* |
 | `deflist_iconsize`   | number | Iconsize in pixel, if the internal icons are used | 24      |
-
-### Defining custom icons to use in the toolbar
 
 The icon values can specify either an  
 1. direct **SVG** definition 

@@ -179,30 +179,31 @@ tinymce.PluginManager.add('deflist', function(editor, url){
     const defaultIcon = {
         'deflist':
             '<svg height="' + size + '" width="' + size + '" viewBox="0 0 100 100">' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/>' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/>' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/>' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/>' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/>' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/>' +
+            '  <rect x="8" y="12" width="60" height="9" rx="4"/>' +
+            '  <rect x="25" y="29" width="64" height="5" rx="2"/>' +
+            '  <rect x="25" y="41" width="64" height="5" rx="2"/>' +
+            '  <rect x="8" y="56" width="60" height="9" rx="4"/>' +
+            '  <rect x="25" y="73" width="64" height="5" rx="2"/>' +
+            '  <rect x="25" y="85" width="64" height="5" rx="2"/>' +
+            
             '</svg>',
         'deflist_title':
             '<svg height="' + size + '" width="' + size + '" viewBox="0 0 100 100">' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/>' +
-            '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/>' +
-            '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/>' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/>' +
-            '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/>' +
-            '  <rect fill="rgb(192,192,192)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/>' +
+            '  <rect x="8" y="12" width="60" height="9" rx="4"/>' +
+            '  <rect fill="#707070" x="25" y="29" width="64" height="5" rx="2"/>' +
+            '  <rect fill="#707070" x="25" y="41" width="64" height="5" rx="2"/>' +
+            '  <rect x="8" y="56" width="60" height="9" rx="4"/>' +
+            '  <rect fill="#707070" x="25" y="73" width="64" height="5" rx="2"/>' +
+            '  <rect fill="#707070" x="25" y="85" width="64" height="5" rx="2"/>' +
             '</svg>',
         'deflist_descr':
             '<svg height="' + size + '" width="' + size + '" viewBox="0 0 100 100">' +
-            '  <rect fill="rgb(192,192,192)" stroke="none" x="8" y="12" width="60" height="9" rx="4"/>' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="29" width="64" height="5" rx="2"/>' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="41" width="64" height="5" rx="2"/>' +
-            '  <rect fill="rgb(192,192,192)" stroke="none" x="8" y="56" width="60" height="9" rx="4"/>' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="73" width="64" height="5" rx="2"/>' +
-            '  <rect fill="rgb(52,52,52)" stroke="none" x="25" y="85" width="64" height="5" rx="2"/>' +
+            '  <rect fill="#707070" x="8" y="12" width="60" height="9" rx="4"/>' +
+            '  <rect x="25" y="29" width="64" height="5" rx="2"/>' +
+            '  <rect x="25" y="41" width="64" height="5" rx="2"/>' +
+            '  <rect fill="#707070" x="8" y="56" width="60" height="9" rx="4"/>' +
+            '  <rect x="25" y="73" width="64" height="5" rx="2"/>' +
+            '  <rect x="25" y="85" width="64" height="5" rx="2"/>' +
             '</svg>',
     };
 
@@ -245,6 +246,7 @@ tinymce.PluginManager.add('deflist', function(editor, url){
     const iconDT = getIcon('deflist_title');
     const iconDD = getIcon('deflist_descr');
     
+    // Toolbar splitbutton
     editor.ui.registry.addSplitButton('deflist', {
         tooltip: 'Definition-list',
         icon: iconDL,
@@ -257,13 +259,13 @@ tinymce.PluginManager.add('deflist', function(editor, url){
                     value: 'dt',
                     icon: iconDT,
                     text: 'Definition-list title',
-                    enabled: editor.selection.getNode().nodeName == 'DD',
+                    enabled: editor.selection.getNode().nodeName.toLowerCase() == 'dd',
                 }, {
                     type: 'choiceitem',
                     value: 'dd',
                     icon: iconDD,
                     text: 'Definition-list description',
-                    enabled: editor.selection.getNode().nodeName == 'DT',
+                    enabled: editor.selection.getNode().nodeName.toLowerCase() == 'dt',
                 }
             ];
             callback(items);
@@ -279,6 +281,33 @@ tinymce.PluginManager.add('deflist', function(editor, url){
         },
         onSetup: setupToggleButtonHandler(editor, 'DL')
     });
+    
+    // menuitems to use in the contextmenu
+    editor.ui.registry.addMenuItem('deflist_title', {
+        icon: iconDT,
+        text: 'Definition-list title',
+        onAction: () => {
+            tinymce.activeEditor.execCommand('Outdent', false, {});            
+        }
+    });
+    editor.ui.registry.addMenuItem('deflist_descr', {
+        icon: iconDD,
+        text: 'Definition-list description',
+        onAction: () => {
+            tinymce.activeEditor.execCommand('Indent', false, {});
+        }
+    });
+    editor.ui.registry.addContextMenu('deflist', {
+        update: (element) => {
+            if (element.nodeName.toLowerCase() == 'dt') {
+                return 'deflist_descr';
+            }
+            if (element.nodeName.toLowerCase() == 'dd') {
+                return 'deflist_title';
+            }
+            return '';
+        }
+    });               
 });
 
 /**
